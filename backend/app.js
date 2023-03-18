@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('fs');
+const https = require('https');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config({ path: './local.env' });
@@ -9,6 +11,11 @@ const addressesRoutes = require('./routes/addresses-routes');
 const HttpError = require('./models/http-error');
 
 const app = express();
+
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+}
 
 app.use(bodyParser.json());
 
@@ -31,7 +38,7 @@ app.use((error, req, res, next) => {
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
-    app.listen(5000);
+    https.createServer(options, app).listen(5000);
   })
   .catch(err => {
     console.log(err);

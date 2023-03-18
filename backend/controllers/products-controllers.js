@@ -68,6 +68,7 @@ const createProduct = async (req, res, next) => {
   res.status(201).json({ product: createdProduct.toObject({ getters: true }) });
 };
 
+// Gets all products
 const getProducts = async (req, res, next) => {
   let products;
   try {
@@ -83,6 +84,7 @@ const getProducts = async (req, res, next) => {
   res.json({ products: products.map((product) => product.toObject({ getters: true })) });
 };
 
+// Gets a specific product
 const getProduct = async (req, res, next) => {
   const productName = req.params.name;
 
@@ -105,6 +107,7 @@ const getProduct = async (req, res, next) => {
   res.json({ product: product.toObject({ getters: true }) });
 };
 
+// Updates a product
 const updateProduct = async (req, res, next) => {
   const productName = req.params.name;
   const { name, description, price, image, quantity, weldingSpecs } = req.body;
@@ -145,6 +148,7 @@ const updateProduct = async (req, res, next) => {
   res.status(200).json({ product: product.toObject({ getters: true }) });
 };
 
+// Deletes a product
 const deleteProduct = async (req, res, next) => {
   const productName = req.params.name;
 

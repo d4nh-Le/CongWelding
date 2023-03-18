@@ -3,21 +3,8 @@ const { validationResult, check } = require('express-validator');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 const { minLength } = User.schema.paths.password.validators[0];
-
-// Gets all existing users
-const getUsers = async (req, res, next) => {
-  let users;
-  try {
-    users = await User.find({}, '-password');
-  } catch (err) {
-    const error = new HttpError(
-      'Fetching users failed, please try again later.',
-      500
-    );
-    return next(error);
-  }
-  res.json({users: users.map(user => user.toObject({ getters: true }))});
-};
+const bcrypt = require('bcrypt');
+const bcryptRounds = 10;
 
 // Creates new user
 const createUser = async (req, res, next) => {
@@ -34,8 +21,11 @@ const createUser = async (req, res, next) => {
   const { name, password, email, gender } = req.body;
 
   let existingUser;
+  let hashedPassword;
+
   try {
     existingUser = await User.findOne({ email: email });
+    hashedPassword = await bcrypt.hash(password, bcryptRounds);
   } catch (err) {
     const error = new HttpError(
       'Signing up failed, please try again later.',
@@ -54,7 +44,7 @@ const createUser = async (req, res, next) => {
   
   const createdUser = new User({
     name,
-    password,
+    password: hashedPassword,
     email,
     gender
   });
@@ -72,7 +62,45 @@ const createUser = async (req, res, next) => {
   res.status(201).json({user: createdUser.toObject({ getters: true })});
 };
 
-// Updates existing user
+// Gets all existing users
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, '-password');
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching users failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+  res.json({users: users.map(user => user.toObject({ getters: true })), ipAddress: req.ip});
+};
+
+// Gets a specific user
+const getUser = async (req, res, next) => {
+  const userEmail = req.params.email;
+
+  let user;
+  try {
+    user = await User.findOne({ email: userEmail });
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching user failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError('Could not find user with the given email.', 404);
+    return next(error);
+  }
+
+  res.json({ user: user.toObject({ getters: true }) });
+};
+
+// Updates an existing user
 const updateUser = async (req, res, next) => {
   check('name').optional().not().isEmpty(),
   check('email').optional().normalizeEmail().isEmail() // Puts it in lowercase as casing doesn't matter for emails and checks if it has a valid email structure
@@ -123,8 +151,42 @@ const updateUser = async (req, res, next) => {
   res.status(200).json({user: user.toObject({ getters: true })});
 };
 
+const deleteUser = async (req, res, next) => {
+  const userEmail = req.params.email;
+
+  let user;
+  try {
+    user = await User.findOne({ email: userEmail });
+  } catch (err) {
+    const error = new HttpError(
+      'Deleting user failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError('Could not find user with the given email.', 404);
+    return next(error);
+  }
+
+  try {
+    await user.remove();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not delete user.',
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ message: 'Deleted user.' });
+}
+
 module.exports = {
+  createUser,
   getUsers,
+  getUser,
   updateUser,
-  createUser
+  deleteUser
 };
