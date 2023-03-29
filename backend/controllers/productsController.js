@@ -1,7 +1,7 @@
 const { validationResult, check } = require('express-validator');
 
-const HttpError = require('../models/http-error');
-const Product = require('../models/product');
+const HttpError = require('../models/httpError');
+const Product = require('../models/productRelated/product');
 
 // Creates new product with optional welding specifications
 const createProduct = async (req, res, next) => {

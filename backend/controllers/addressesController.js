@@ -1,5 +1,5 @@
-const Address = require('../models/address');
-const User = require('../models/user');
+const Address = require('../models/userRelated/address');
+const User = require('../models/roles/verified/user');
 
 // Create a new address for a user
 const createAddress = async (req, res) => {
@@ -7,7 +7,7 @@ const createAddress = async (req, res) => {
     const { street, city, province, postalCode, email } = req.body;
     const user = await User.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User with email ' + email + ' not found' });
     }
     const address = new Address({ street, city, province, postalCode, user: user._id });
     await address.save();

@@ -1,7 +1,7 @@
 const { validationResult, check } = require('express-validator');
 
-const HttpError = require('../models/http-error');
-const User = require('../models/user');
+const HttpError = require('../models/httpError');
+const User = require('../models/roles/verified/user');
 const { minLength } = User.schema.paths.password.validators[0];
 const bcrypt = require('bcrypt');
 const bcryptRounds = 10;

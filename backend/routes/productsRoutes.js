@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { createProduct, getProducts, getProduct, updateProduct, deleteProduct } = require('../controllers/products-controllers');
+const { createProduct, getProducts, getProduct, updateProduct, deleteProduct } = require('../controllers/productsController');
 
 module.exports = express.Router()
   .post('/create', createProduct)
