@@ -8,6 +8,7 @@ module.exports = express.Router()
   .get('/:email', getUser)
   .post('/create/:token', createUser)
   .post('/login', userLogin)
+  //.route() need to figure out what I'm doing with this verify route
   .post('/logout', userLogout)
   .post('/verify', userVerify)
   .post('/signup', userSignup)
