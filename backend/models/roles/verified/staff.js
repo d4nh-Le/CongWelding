@@ -8,11 +8,11 @@ const staffSchema = new Schema({
     name: { type: String, required: true },
     password: { type: String, required: true, minlength: 8 },
     email: { type: String, required: true, unique: true },
-    gender: {type: String, required: true},
-    roles: {type: String, default: [] },
-    sessionId : { type: String },
+    gender: { type: String, required: true},
+    roles: { type: String, default: [] },
+    sessionId : { type: String }
 });
 
 staffSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('Staff', staffSchema);
+module.exports = mongoose.model('staff', staffSchema);

@@ -1,13 +1,16 @@
 const express = require('express');
 
 const { getUsers, getUser, updateUser, createUser, deleteUser } = require('../controllers/usersController');
-const { userLogin, userLogout } = require('../middleware/user/userAuthentication');
+const { userLogin, userLogout, userAuth, userSignup, userVerify, userResendVerify } = require('../middleware/user/userAuthentication');
 
 module.exports = express.Router()
   .get('/', getUsers)
   .get('/:email', getUser)
-  .patch('/update/:email', updateUser)
-  .post('/signup', createUser)
+  .post('/create/:token', createUser)
   .post('/login', userLogin)
   .post('/logout', userLogout)
+  .post('/verify', userVerify)
+  .post('/signup', userSignup)
+  .patch('/update/:email', updateUser)
+  .patch('/resendVerify/:email', userResendVerify)
   .delete('/delete/:email', deleteUser);

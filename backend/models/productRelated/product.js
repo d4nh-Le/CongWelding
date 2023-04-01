@@ -25,6 +25,6 @@ const productSchema = new Schema({
 productSchema.plugin(uniqueValidator);
 productSchema.index({ name: 1, 'weldingSpecs.model': 1 }, { unique: true });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('product', productSchema);
 
 

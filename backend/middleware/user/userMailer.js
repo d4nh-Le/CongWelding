@@ -33,3 +33,7 @@ const sendActivation = async(activationLink)  => {
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
+
+module.exports = {
+    sendActivation
+  };

@@ -1,12 +1,11 @@
 const { validationResult, check } = require('express-validator');
-
 const HttpError = require('../models/httpError');
 const User = require('../models/roles/verified/user');
 const { minLength } = User.schema.paths.password.validators[0];
 const bcrypt = require('bcrypt');
 const bcryptRounds = 10;
 
-// Creates new user
+// Creates verified user from unverifiedUser
 const createUser = async (req, res, next) => {
   check('name').not().isEmpty(),
   check('email').normalizeEmail().isEmail(), // Puts it in lowercase as casing doesn't matter for emails and checks if it has a valid email structure
