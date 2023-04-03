@@ -1,0 +1,31 @@
+.home{
+    display: flex;
+    
+    .container{
+        background-color: #f3f4f8;
+        flex: 6;
+       
+    }
+    .widgets,
+    .charts {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
+    .leftE{
+      width: 60%;
+      float: left;
+    }
+    .rightE{
+      display: flex;
+      width: 40%;
+      float: right;
+    }
+    .listContainer{
+      margin: 3rem
+    }
+    .linkToOrder{
+      float: right;
+    }
+};
+
