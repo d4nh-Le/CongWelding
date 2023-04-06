@@ -1,14 +1,17 @@
 const HttpError = require('../../models/httpError');
+const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcrypt');
+const bcryptRounds = 10;
 const User = require('../../models/roles/verified/user');
 const UnverifiedUser = require('../../models/roles/unverified/unverifiedUser');
 const { v4: uuidv4 } = require('uuid');
 const { sendActivation } = require('./userMailer');
 const { minLength } = User.schema.paths.password.validators[0];
 const cookieMaxMins = 20;
+const verifyAPI = "/verify/";
 
 // Creates sessionID as a cookie and in the database
-const userLogin = async (req, res, next) => {
+  const userLogin = async (req, res, next) => {
     const { email, password } = req.body;
   
     let existingUser;
@@ -116,7 +119,7 @@ const userLogin = async (req, res, next) => {
     let hashedPassword;
     const verificationToken = uuidv4();
     const uniqueUrl = uuidv4();
-    const activationLink = req.protocol + '://' + req.get('host') + req.originalUrl + "/?verify=" + uniqueUrl;
+    const activationLink = req.protocol + '://' + req.get('host') + verifyAPI + uniqueUrl;
 
     try {
       existingUser = await User.findOne({ email: email });
@@ -149,7 +152,7 @@ const userLogin = async (req, res, next) => {
 
     try {
       await createdUnverifiedUser.save();
-      await sendActivation(activationLink);
+      await sendActivation(activationLink, email);
     } catch (err) {
       const error = new HttpError(
         'Signing up failed, please try again.',
@@ -158,6 +161,7 @@ const userLogin = async (req, res, next) => {
       return next(error);
     }
 
+    res.cookie('verificationToken', verificationToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: cookieMaxMins * 60 * 1000 });
     res.status(201).json({user: createdUnverifiedUser.toObject({ getters: true })});
   }
   
@@ -230,43 +234,53 @@ const userLogin = async (req, res, next) => {
       return next(error);
     }
   
-    res.status(201).json({user: createdUser.toObject({ getters: true })});
-
     res.clearCookie('verificationToken');
+    res.status(201).json({user: createdUser.toObject({ getters: true })});
   }
 
   // Useful for when people clear their cookies or they didn't receive their email
   const userResendVerify = async(req, res, next) => {
     const { email } = req.body;
+    console.log(email);
 
     let unverifiedUser;
 
     const verificationToken = uuidv4();
     const uniqueUrl = uuidv4();
-    const activationLink = req.protocol + '://' + req.get('host') + req.originalUrl + "/?verify=" + uniqueUrl; //probably gonna need to change this
+    const activationLink = req.protocol + '://' + req.get('host') + verifyAPI + uniqueUrl;
 
     try {
       unverifiedUser = await UnverifiedUser.findOne({ email: email });
+      console.log(unverifiedUser)
     } catch (err) {
       const error = new HttpError('Can\'t find unactivated user with email address specified.', 404);
       return next(error);
     }
 
-    unverifiedUser.verificationToken = verificationToken;
+    if(!unverifiedUser) {
+      const error = new HttpError('Can\'t find unactivated user with email address specified.', 404);
+      return next(error);
+    }
+
+    verificationToken ? unverifiedUser.verificationToken = verificationToken : null;
+    uniqueUrl ? unverifiedUser.uniqueUrl = uniqueUrl : null;
 
     try {
-      await user.save();
+      await unverifiedUser.save();
     } catch (err) {
       const error = new HttpError('Failed to update unactivated user.', 500);
       return next(error);
     }
 
     try {
-      await sendActivation(activationLink);
+      await sendActivation(activationLink, email);
     } catch (err) {
       const error = new HttpError('Failed to send activation email.', 500);
       return next(error);
     }
+
+    res.cookie('verificationToken', verificationToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: cookieMaxMins * 60 * 1000 });
+    res.status(200).json("Sent email sent to " + email);
   }
   
 

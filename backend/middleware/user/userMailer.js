@@ -1,38 +1,36 @@
 const nodemailer = require("nodemailer");
+const aws = require("@aws-sdk/client-ses");
+require('dotenv').config({ path: './local.env' });
 
-const sendActivation = async(activationLink)  => {
-    let testAccount = await nodemailer.createTestAccount();
+const sendActivation = async(activationLink, userEmail) => {
 
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-        user: testAccount.user, // generated ethereal user
-        pass: testAccount.pass, // generated ethereal password
-        },
+    const ses = new aws.SES({
+    apiVersion: "2010-12-01",
+    region: "ca-central-1",
+    credentials: {
+        accessKeyId: process.env.MAILER_ID,
+        secretAccessKey: process.env.MAILER_SECRET
+    },
     });
 
-    // Create unverified user
-    
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-        from: '"Cong Welding" <CongWelding@example.com>', // sender address
-        to: "bar@example.com, baz@example.com", // list of receivers
-        subject: "Account Activation for Cong Welding", // Subject line
-        text: "Thanks for signing up! You can activate your account by clicking on this link.\n\n" + activationLink, // plain text body
-        html: "<b>Not sure if I need this</b>", // html body
+    // create Nodemailer SES transporter
+    const transporter = nodemailer.createTransport({
+        SES: { ses, aws },
+        sendingRate: 1 // max messages/second
     });
 
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    console.log(userEmail);
 
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    // send some mail
+    transporter.sendMail({
+        from: process.env.MAILER_SERVER,
+        to: userEmail,
+        subject: "Message",
+        text: "I hope this message gets sent!" + activationLink
+    });
 }
+
+
 
 module.exports = {
     sendActivation

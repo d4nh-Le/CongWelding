@@ -9,7 +9,7 @@ const staffSchema = new Schema({
     password: { type: String, required: true, minlength: 8 },
     email: { type: String, required: true, unique: true },
     gender: { type: String, required: true},
-    roles: { type: String, default: [] },
+    role: { type: String, default: null },
     sessionId : { type: String }
 });
 

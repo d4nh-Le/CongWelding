@@ -150,6 +150,7 @@ const updateUser = async (req, res, next) => {
   res.status(200).json({user: user.toObject({ getters: true })});
 };
 
+
 const deleteUser = async (req, res, next) => {
   const userEmail = req.params.email;
 
@@ -181,6 +182,8 @@ const deleteUser = async (req, res, next) => {
 
   res.status(200).json({ message: 'Deleted user.' });
 }
+
+
 
 module.exports = {
   createUser,
