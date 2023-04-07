@@ -113,7 +113,7 @@ const verifyAPI = "/verify/";
         new HttpError('Invalid inputs passed, please check your data.', 422)
       );
     }
-    const { name, password, email, gender } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     let existingUser;
     let hashedPassword;
@@ -142,10 +142,10 @@ const verifyAPI = "/verify/";
     }
     
     const createdUnverifiedUser = new UnverifiedUser({
-      name,
-      password: hashedPassword,
+      firstName,
+      lastName,
       email,
-      gender,
+      password: hashedPassword,
       verificationToken,
       uniqueUrl
     });
@@ -217,10 +217,10 @@ const verifyAPI = "/verify/";
     }
 
     const createdUser = new User({
-      name: unverifiedUser.name,
-      password: unverifiedUser.password,
+      firstName: unverifiedUser.firstName,
+      lastName: unverifiedUser.lastName,
       email: unverifiedUser.email,
-      gender: unverifiedUser.gender
+      password: unverifiedUser.password
     });
   
     try {
