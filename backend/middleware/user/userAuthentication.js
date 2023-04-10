@@ -5,7 +5,7 @@ const bcryptRounds = 10;
 const User = require('../../models/roles/verified/user');
 const UnverifiedUser = require('../../models/roles/unverified/unverifiedUser');
 const { v4: uuidv4 } = require('uuid');
-const { sendActivation } = require('./userMailer');
+const { userSendActivation } = require('./userMailer');
 const { minLength } = User.schema.paths.password.validators[0];
 const cookieMaxMins = 20;
 const verifyAPI = "/verify/";
@@ -103,7 +103,8 @@ const verifyAPI = "/verify/";
 
   // Creates unverified user
   const userSignup = async (req, res, next) => {
-    check('name').not().isEmpty(),
+    check('firstName').not().isEmpty(),
+    check('lastName').not().isEmpty(),
     check('email').normalizeEmail().isEmail(), // Puts it in lowercase as casing doesn't matter for emails and checks if it has a valid email structure
     check('password').isLength({ min: minLength })
 
@@ -123,11 +124,19 @@ const verifyAPI = "/verify/";
 
     try {
       existingUser = await User.findOne({ email: email });
-      hashedPassword = await bcrypt.hash(password, bcryptRounds);
-
     } catch (err) {
       const error = new HttpError(
-        'Signing up failed, please try again later.',
+        'Failed to check for existing user.',
+        500
+      );
+      return next(error);
+    }
+
+    try {
+      hashedPassword = await bcrypt.hash(password, bcryptRounds);
+    } catch (err) {
+      const error = new HttpError(
+        'Password hashing failed, please try again later.',
         500
       );
       return next(error);
@@ -144,25 +153,36 @@ const verifyAPI = "/verify/";
     const createdUnverifiedUser = new UnverifiedUser({
       firstName,
       lastName,
-      email,
       password: hashedPassword,
+      email,
       verificationToken,
       uniqueUrl
     });
 
+    let previewUrl;
+
     try {
-      await createdUnverifiedUser.save();
-      await sendActivation(activationLink, email);
+      previewUrl = await userSendActivation(activationLink, email);
     } catch (err) {
       const error = new HttpError(
-        'Signing up failed, please try again.',
+        'Sending verification email failed, please try again.',
+        500
+      );
+      return next(error);
+    }
+
+    try {
+      await createdUnverifiedUser.save();
+    } catch (err) {
+      const error = new HttpError(
+        'Saving user failed, please try again.',
         500
       );
       return next(error);
     }
 
     res.cookie('verificationToken', verificationToken, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: cookieMaxMins * 60 * 1000 });
-    res.status(201).json({user: createdUnverifiedUser.toObject({ getters: true })});
+    res.status(201).json({ user: createdUnverifiedUser.toObject({ getters: true }), previewUrl });
   }
   
   // Compares sessionId in database to sessionId from cookie for auth
@@ -273,7 +293,7 @@ const verifyAPI = "/verify/";
     }
 
     try {
-      await sendActivation(activationLink, email);
+      await userSendActivation(activationLink, email);
     } catch (err) {
       const error = new HttpError('Failed to send activation email.', 500);
       return next(error);

@@ -1,37 +1,32 @@
-const nodemailer = require("nodemailer");
-const aws = require("@aws-sdk/client-ses");
+const HttpError = require('../../models/httpError');
+const { testSendMail } = require('../mailer');
 require('dotenv').config({ path: './local.env' });
 
-const sendActivation = async(activationLink, userEmail) => {
+const userSendActivation = async(activationLink, email) => {
 
-    const ses = new aws.SES({
-    apiVersion: "2010-12-01",
-    region: "ca-central-1",
-    credentials: {
-        accessKeyId: process.env.MAILER_ID,
-        secretAccessKey: process.env.MAILER_SECRET
-    },
-    });
-
-    // create Nodemailer SES transporter
-    const transporter = nodemailer.createTransport({
-        SES: { ses, aws },
-        sendingRate: 1 // max messages/second
-    });
-
-    console.log(userEmail);
-
-    // send some mail
-    transporter.sendMail({
+   const mailInfo = {
         from: process.env.MAILER_SERVER,
-        to: userEmail,
-        subject: "Message",
-        text: "I hope this message gets sent!" + activationLink
-    });
+        to: email,
+        subject: 'Account Activation for Cong Welding',
+        text: `Thank you for signing up! You can activate your account by clicking on the link below.\n\n${activationLink}`,
+        html: `<p>Thank you for signing up! You can activate your account by clicking on the link below.</p><br><br><a href="${activationLink}">${activationLink}</a>`
+   }
+
+   console.log(mailInfo);
+
+
+   let previewUrl;
+
+   try {
+        previewUrl = await testSendMail(mailInfo);
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not send activation email.', 500);
+        return next(error);
+    }
+
+    return previewUrl;
 }
 
-
-
 module.exports = {
-    sendActivation
-  };
+    userSendActivation
+};
