@@ -1,0 +1,72 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #000000;
+  background: -webkit-linear-gradient(to right, #434343, #000000);
+  background: linear-gradient(to right, #434343, #000000);
+  height: 80px;
+  padding: 0 20px;
+}
+
+.navbar-logo {
+  width: 80px;
+  height: 80px;
+}
+
+.navbar-middle {
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-link {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-link:hover {
+  background-color: #7b7b7b;
+}
+
+.navbar-link svg {
+  margin-right: 8px;
+}
+
+.navbar-account-button {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: #7b7b7b;
+}
+
+.navbar-account-button:hover {
+  background-color: #434343;
+}
+
+.navbar-account-button svg {
+  margin-right: 8px;
+}
+
+.sign-up {
+  margin-top: 16;
+  text-align: center;
+}

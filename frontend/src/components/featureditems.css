@@ -1,0 +1,23 @@
+.featured-items-container {
+  background: #ececec;
+  padding: 30px;
+}
+
+.featured-items-container .ant-card {
+  height: 100%;
+}
+
+.featured-items-container .ant-card-cover img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.featured-items-container .ant-card-meta {
+  text-align: center;
+}
+
+@media screen and (max-width: 767px) {
+  .featured-items-container .ant-card-cover img {
+    height: 150px;
+  }
+}
