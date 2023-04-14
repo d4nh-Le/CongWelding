@@ -9,7 +9,7 @@ const userSchema = new Schema({
     lastName : { type: String, required: true },
     password: { type: String, required: true, minlength: 8 },
     email: { type: String, required: true, unique: true },
-    sessionId : { type: String },
+    sessionId : { type: String, required: true },
     lastKnownIP: { type: String }
 });
 
