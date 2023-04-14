@@ -1,13 +1,13 @@
 const express = require('express');
 
 const { getAdmin, getAdminMember, updateAdmin, createAdmin, deleteAdmin } = require('../controllers/adminControllers');
-const { adminLogin, adminLogout } = require('../middleware/admin/adminAuthentication');
+const { adminLogin, adminLogout, adminAuth } = require('../middleware/admin/adminAuthentication');
 
 module.exports = express.Router()
-  .get('/', getAdmin)
-  .get('/:email', getAdminMember)
-  .patch('/update/:email', updateAdmin)
-  .post('/signup', createAdmin)
+  .get('/', adminAuth, getAdmin)
+  .get('/:email', adminAuth, getAdminMember)
+  .patch('/update/:email', adminAuth, updateAdmin)
+  .post('/signup', adminAuth, createAdmin)
   .post('/login', adminLogin)
-  .post('/logout', adminLogout)
-  .delete('/delete/:email', deleteAdmin);
+  .post('/logout', adminAuth, adminLogout)
+  .delete('/delete/:email', adminAuth, deleteAdmin);

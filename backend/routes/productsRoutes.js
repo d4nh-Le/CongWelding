@@ -1,9 +1,11 @@
 const express = require('express');
 
 const { createProduct, getProducts, getProduct, updateProduct, deleteProduct, getProductsByName } = require('../controllers/productsController');
+const { adminAuth } = require('../middleware/admin/adminAuthentication');
+
 module.exports = express.Router()
-  .post('/create', createProduct)
+  .post('/create', adminAuth, createProduct)
   .get('/', getProducts)
   .get('/:name', getProductsByName)
-  .patch('/update/:name', updateProduct)
-  .delete('/delete/:name', deleteProduct);
+  .patch('/update/:name', adminAuth, updateProduct)
+  .delete('/delete/:name', adminAuth, deleteProduct);

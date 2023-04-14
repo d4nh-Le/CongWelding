@@ -7,10 +7,9 @@ const addressSchema = new Schema({
     street: { type: String, required: true },
     city: { type: String, required: true },
     province: { type: String, required: true },
-    postalCode: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
-}, { unique: true });  // Prevents users from adding address duplicates
+    postalCode: { type: String, required: true }
+}); 
 
-module.exports = mongoose.model('Address', addressSchema);
+module.exports = mongoose.model('address', addressSchema);
 
 

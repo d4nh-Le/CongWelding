@@ -8,7 +8,11 @@ const createProduct = async (req, res, next) => {
   const { name, description, price, image, quantity, weldingSpecs } = req.body;
 
   const createdProduct = new Product({
-    name, description, price, image, quantity
+    name, 
+    description, 
+    price, 
+    image, 
+    quantity
   });
 
   let existingProduct;
