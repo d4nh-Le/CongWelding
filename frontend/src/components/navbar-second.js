@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar-second.css';
 import { Menu, Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 
 function Navbar2() {
   const menu = (
@@ -15,6 +15,11 @@ function Navbar2() {
   return (
     <nav className="navbar2">
       <div className="items">
+        <span>
+          <a href="products" className="dropdown-link">
+            <BarsOutlined /> All
+          </a>
+        </span>
         <Dropdown overlay={menu} trigger={['click']}>
           <span className="dropdown-link">
             Equipment1 <DownOutlined />
