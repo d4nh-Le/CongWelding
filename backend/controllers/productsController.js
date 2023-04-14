@@ -8,11 +8,11 @@ const createProduct = async (req, res, next) => {
   const { name, description, price, image, quantity, weldingSpecs } = req.body;
 
   const createdProduct = new Product({
-    name, 
-    description, 
-    price, 
-    image, 
-    quantity
+    name,
+    description,
+    price,
+    image,
+    quantity,
   });
 
   let existingProduct;
@@ -39,7 +39,9 @@ const createProduct = async (req, res, next) => {
 
     let existingModel;
     try {
-      existingModel = await Product.findOne({ 'weldingSpecs.model': weldingSpecs.model });
+      existingModel = await Product.findOne({
+        'weldingSpecs.model': weldingSpecs.model,
+      });
     } catch (err) {
       const error = new HttpError(
         'Searching for existing models failed. Try again later.',
@@ -79,12 +81,11 @@ const createProduct = async (req, res, next) => {
   res.status(201).json({ product: createdProduct.toObject({ getters: true }) });
 };
 
-
 // Gets all products
 const getProducts = async (req, res, next) => {
   let products;
   try {
-    products = await Product.find({});
+    products = await Product.find();
   } catch (err) {
     const error = new HttpError(
       'Fetching products failed, please try again later.',
@@ -93,7 +94,9 @@ const getProducts = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ products: products.map((product) => product.toObject({ getters: true })) });
+  res.json({
+    products: products.map((product) => product.toObject({ getters: true })),
+  });
 };
 
 // Gets multiple products with similar names
@@ -102,7 +105,7 @@ const getProductsByName = async (req, res, next) => {
 
   let products;
   try {
-    const regex = new RegExp(productName, "i"); // "i" flag makes the search case-insensitive
+    const regex = new RegExp(productName, 'i'); // "i" flag makes the search case-insensitive
     products = await Product.find({ name: regex });
   } catch (err) {
     const error = new HttpError(
@@ -113,11 +116,16 @@ const getProductsByName = async (req, res, next) => {
   }
 
   if (products.length === 0) {
-    const error = new HttpError('Could not find products with the given name.', 404);
+    const error = new HttpError(
+      'Could not find products with the given name.',
+      404
+    );
     return next(error);
   }
 
-  res.json({ products: products.map(product => product.toObject({ getters: true })) });
+  res.json({
+    products: products.map((product) => product.toObject({ getters: true })),
+  });
 };
 
 // Gets a specific product
@@ -136,7 +144,10 @@ const getProduct = async (req, res, next) => {
   }
 
   if (!product) {
-    const error = new HttpError('Could not find product with the given name.', 404);
+    const error = new HttpError(
+      'Could not find product with the given name.',
+      404
+    );
     return next(error);
   }
 
@@ -160,16 +171,19 @@ const updateProduct = async (req, res, next) => {
   }
 
   if (!product) {
-    const error = new HttpError('Could not find product with the given name.', 404);
+    const error = new HttpError(
+      'Could not find product with the given name.',
+      404
+    );
     return next(error);
   }
 
-  name ? product.name = name : null;
-  description ? product.description = description : null;
-  price ? product.price = price : null;
-  image ? product.image = image : null;
-  quantity ? product.quantity = quantity: null;
-  weldingSpecs ? product.weldingSpecs = weldingSpecs: null;
+  name ? (product.name = name) : null;
+  description ? (product.description = description) : null;
+  price ? (product.price = price) : null;
+  image ? (product.image = image) : null;
+  quantity ? (product.quantity = quantity) : null;
+  weldingSpecs ? (product.weldingSpecs = weldingSpecs) : null;
 
   try {
     await product.save();
@@ -200,7 +214,10 @@ const deleteProduct = async (req, res, next) => {
   }
 
   if (!product) {
-    const error = new HttpError('Could not find product with the given name.', 404);
+    const error = new HttpError(
+      'Could not find product with the given name.',
+      404
+    );
     return next(error);
   }
 
@@ -217,11 +234,11 @@ const deleteProduct = async (req, res, next) => {
   res.status(200).json({ message: 'Deleted product.' });
 };
 
-module.exports = { 
-    createProduct, 
-    getProducts, 
-    getProductsByName,
-    getProduct, 
-    updateProduct, 
-    deleteProduct 
+module.exports = {
+  createProduct,
+  getProducts,
+  getProductsByName,
+  getProduct,
+  updateProduct,
+  deleteProduct,
 };

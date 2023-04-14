@@ -1,0 +1,51 @@
+/* Style for the entire page */
+body {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+}
+
+/* Style for the filters card */
+.card {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background-color: #fff;
+}
+
+.card .ant-input {
+  margin-bottom: 10px;
+}
+
+.card .ant-select {
+  margin-bottom: 10px;
+}
+
+/* Style for the products cards */
+.col {
+  display: flex;
+  justify-content: center;
+}
+
+.col .ant-card {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.col .ant-card:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+.col .ant-card p {
+  margin-bottom: 5px;
+}
+
+.col .ant-card-title {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+}

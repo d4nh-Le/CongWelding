@@ -1,42 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Input, Checkbox, Select, Card } from 'antd';
+import './products.css';
 
 const { Option } = Select;
-
-const products = [
-  {
-    id: 1,
-    name: 'Welding Helmet',
-    brand: '3M',
-    type: 'Auto-darkening',
-    price: 120,
-    available: true,
-  },
-  {
-    id: 2,
-    name: 'Welding Gloves',
-    brand: 'Lincoln Electric',
-    type: 'MIG/TIG',
-    price: 25,
-    available: true,
-  },
-  {
-    id: 3,
-    name: 'Welding Jacket',
-    brand: 'Miller Electric',
-    type: 'Heavy-Duty',
-    price: 80,
-    available: false,
-  },
-  {
-    id: 4,
-    name: 'Welding Fume Extractor',
-    brand: 'Donaldson Torit',
-    type: 'Portable',
-    price: 400,
-    available: true,
-  },
-];
 
 const WeldingProducts = () => {
   const [filters, setFilters] = useState({
@@ -45,6 +11,15 @@ const WeldingProducts = () => {
     price: '',
     available: false,
   });
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((res) => res.json())
+      .then((data) => setFilteredProducts(data.products))
+      .catch((err) => console.error(err));
+  }, []);
 
   const handleBrandChange = (value) => {
     setFilters({ ...filters, brand: value });
@@ -62,7 +37,7 @@ const WeldingProducts = () => {
     setFilters({ ...filters, available: e.target.checked });
   };
 
-  const filteredProducts = products.filter((product) => {
+  const applyFilters = (product) => {
     if (filters.brand && product.brand !== filters.brand) {
       return false;
     }
@@ -76,7 +51,9 @@ const WeldingProducts = () => {
       return false;
     }
     return true;
-  });
+  };
+
+  const visibleProducts = filteredProducts.filter(applyFilters);
 
   return (
     <div>
