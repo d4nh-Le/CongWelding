@@ -79,7 +79,7 @@ const createProduct = async (req, res, next) => {
   }
 
   res.status(201).json({ product: createdProduct.toObject({ getters: true }) });
-};
+}
 
 // Gets all products
 const getProducts = async (req, res, next) => {
@@ -97,7 +97,7 @@ const getProducts = async (req, res, next) => {
   res.json({
     products: products.map((product) => product.toObject({ getters: true })),
   });
-};
+}
 
 // Gets multiple products with similar names
 const getProductsByName = async (req, res, next) => {
@@ -126,7 +126,7 @@ const getProductsByName = async (req, res, next) => {
   res.json({
     products: products.map((product) => product.toObject({ getters: true })),
   });
-};
+}
 
 // Gets a specific product
 const getProduct = async (req, res, next) => {
@@ -152,7 +152,7 @@ const getProduct = async (req, res, next) => {
   }
 
   res.json({ product: product.toObject({ getters: true }) });
-};
+}
 
 // Updates a product
 const updateProduct = async (req, res, next) => {
@@ -196,7 +196,7 @@ const updateProduct = async (req, res, next) => {
   }
 
   res.status(200).json({ product: product.toObject({ getters: true }) });
-};
+}
 
 // Deletes a product
 const deleteProduct = async (req, res, next) => {
@@ -232,7 +232,7 @@ const deleteProduct = async (req, res, next) => {
   }
 
   res.status(200).json({ message: 'Deleted product.' });
-};
+}
 
 module.exports = {
   createProduct,
