@@ -9,6 +9,8 @@ import Cart from './pages/Cart';
 import Signup from './pages/signup';
 import WeldingProducts from './pages/products';
 import Contact from './pages/contact';
+import Contactinfo from './pages/contactinfo';
+import Frequentlyaskedquestions from './pages/frequentlyaskedquestions';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/products" element={<WeldingProducts />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/contactinfo" element={<Contactinfo />} />
+          <Route path="/faq" element={<Frequentlyaskedquestions />} />
         </Routes>
         <Footer />
       </Router>
