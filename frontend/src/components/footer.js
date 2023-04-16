@@ -14,15 +14,15 @@ const Footer = () => {
 				</div>
 				<div className="column">
 					<h2>Contact Us</h2>
+					<div className="footer-link"> Contact Us </div>
 					<div className="footer-link"> Contact Information </div>
-					<div className="footer-link"> Location </div>
-					<div className="footer-link"> Hours </div>
+					<div className="footer-link"> Location & Hours </div>
 				</div>
 				<div className="column">
 					<h2>Services</h2>
 					<div className="footer-link"> What We Do </div>
 					<div className="footer-link"> Our Products </div>
-					<div className="footer-link"> Contact Us </div>
+					<div className="footer-link"> Our Services </div>
 				</div>
 				<div className="column">
 					<h2>Account</h2>

@@ -8,6 +8,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import Cart from './pages/Cart';
 import Signup from './pages/signup';
 import WeldingProducts from './pages/products';
+import Contact from './pages/contact';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/products" element={<WeldingProducts />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </Router>
