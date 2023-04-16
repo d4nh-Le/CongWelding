@@ -51,7 +51,7 @@ const data = {
 const styles = {
     bgColor: 'white',
     titleTextColor: 'black',
-    titleTextSize: '36px',
+    titleTextSize: '28px',
     rowTitleColor: 'black',
     rowTitleTextSize: 'large',
     rowContentColor: 'grey',

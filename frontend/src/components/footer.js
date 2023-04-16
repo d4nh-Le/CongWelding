@@ -10,7 +10,12 @@ const Footer = () => {
 			<div className="footer-columns">
 				<div className="column">
 					<h2>About Us</h2>
-					<div className="footer-link"> Our Company </div>
+					<div className="footer-link"> 
+					<Link to="/ourcompany" style={{ textDecoration: 'none', color: 'white'}}> Our Company </Link>
+					</div>
+					<div className="footer-link"> 
+					<Link to="/ourcompany" style={{ textDecoration: 'none', color: 'white'}}> What We Do </Link>
+					</div>
 					<div className="footer-link"> 
 					<Link to="/faq" style={{ textDecoration: 'none', color: 'white'}}> FAQ </Link>
 					</div>
@@ -28,20 +33,16 @@ const Footer = () => {
 					</div>
 				</div>
 				<div className="column">
-					<h2>Services</h2>
-					<div className="footer-link"> What We Do </div>
-					<div className="footer-link"> Our Products </div>
+					<h2>Products & Services</h2>
+					<div className="footer-link"> 
+					<Link to="/products" style={{ textDecoration: 'none', color: 'white'}}> Our Products </Link>
+					</div>
 					<div className="footer-link"> Our Services </div>
 				</div>
 				<div className="column">
 					<h2>Account</h2>
 					<div className="footer-link"> Login </div>
 					<div className="footer-link"> Register </div>
-				</div>
-				<div className="column">
-					<h2>Social Media</h2>
-					<div className="footer-link"> Facebook </div>
-					<div className="footer-link"> Instagram </div>
 				</div>
 			</div>
 			<h3>{`Copyright © Cong Welding ${year}`}</h3>

@@ -11,6 +11,7 @@ import WeldingProducts from './pages/products';
 import Contact from './pages/contact';
 import Contactinfo from './pages/contactinfo';
 import Frequentlyaskedquestions from './pages/frequentlyaskedquestions';
+import Ourcompany from './pages/ourcompany';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/contactinfo" element={<Contactinfo />} />
           <Route path="/faq" element={<Frequentlyaskedquestions />} />
+          <Route path="/ourcompany" element={<Ourcompany />} />
         </Routes>
         <Footer />
       </Router>
