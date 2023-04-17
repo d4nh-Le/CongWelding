@@ -7,6 +7,7 @@ import { Modal, Form, Input, Button } from 'antd';
 
 import SearchBar from './searchbar';
 import Logo from '../images/cong-logo.png';
+import AccountInfo from '../pages/userdetails';
 import './navbar.css';
 
 function Navbar() { 
@@ -102,6 +103,8 @@ function Navbar() {
           <Link to="/signup" onClick={handleSignUpClick}>
             Sign Up!
           </Link>
+          <Link to="/userdetails"> Detailts </Link>
+
         </div>
       </Modal>
     </nav>
