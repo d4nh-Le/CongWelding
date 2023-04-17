@@ -35,7 +35,7 @@ const Contact = () => {
             <input type="text" placeholder="Your Name" value={name} onChange={e => setName(e.target.value)} />
             <input type="email" placeholder="Your email address" value={email} onChange={e => setEmail(e.target.value)} />
             <textarea placeholder="Your message" value={message} onChange={e => setMessage(e.target.value)}></textarea>
-            <button onClick={submit}>Send Message</button>
+            <button className="contact-button" onClick={submit}>Send Message</button>
         </div>
         <h4>We will respond via email within 2 business days.</h4></>
     );

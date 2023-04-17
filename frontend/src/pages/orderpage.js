@@ -42,7 +42,7 @@ const Orderpage = () => {
             <input type="text" placeholder="Postal Code" value={billingPostal} onChange={e => setBillingPostal(e.target.value)}/>
             <br />
             <br />
-            <button>Place Order</button>
+            <button className="order-button">Place Order</button>
         </div></>
     );
 };
