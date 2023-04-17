@@ -32,8 +32,8 @@ const Contact = () => {
 
     return (
         <><h1>Please fill our contact form to contact us directly:</h1><div id="contact-form">
-            <input type="text" placeholder="Your Name" value={name} onChange={e => setName(e.target.value)} />
-            <input type="email" placeholder="Your email address" value={email} onChange={e => setEmail(e.target.value)} />
+            <input className="contact-input" type="text" placeholder="Your Name" value={name} onChange={e => setName(e.target.value)} />
+            <input  className="contact-input" type="email" placeholder="Your email address" value={email} onChange={e => setEmail(e.target.value)} />
             <textarea placeholder="Your message" value={message} onChange={e => setMessage(e.target.value)}></textarea>
             <button className="contact-button" onClick={submit}>Send Message</button>
         </div>

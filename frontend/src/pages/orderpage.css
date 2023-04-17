@@ -10,3 +10,11 @@ h6 {
     margin-left: 20px;
     margin-bottom: 15px;
 }
+
+.order-input {
+    width: 95%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    margin-left: 20px;
+  }

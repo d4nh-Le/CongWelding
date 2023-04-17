@@ -29,17 +29,17 @@ const Orderpage = () => {
         
         <h6>Please enter your Shipping Address:</h6>
         <div classname="shipping-address">
-            <input type="text" placeholder="Street" value={shippingStreet} onChange={e => setShippingStreet(e.target.value)}/>
-            <input type="text" placeholder="City" value={shippingCity} onChange={e => setShippingCity(e.target.value)}/>
-            <input type="text" placeholder="Province" value={shippingProvince} onChange={e => setShippingProvince(e.target.value)}/>
-            <input type="text" placeholder="Postal Code" value={shippingPostal} onChange={e => setShippingPostal(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="Street" value={shippingStreet} onChange={e => setShippingStreet(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="City" value={shippingCity} onChange={e => setShippingCity(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="Province" value={shippingProvince} onChange={e => setShippingProvince(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="Postal Code" value={shippingPostal} onChange={e => setShippingPostal(e.target.value)}/>
         </div>
         <h6>Please enter your Billing Address:</h6>
         <div classname="billing-address">
-            <input type="text" placeholder="Street" value={billingStreet} onChange={e => setBillingStreet(e.target.value)}/>
-            <input type="text" placeholder="City" value={billingCity} onChange={e => setBillingCity(e.target.value)}/>
-            <input type="text" placeholder="Province" value={billingProvince} onChange={e => setBillingProvince(e.target.value)}/>
-            <input type="text" placeholder="Postal Code" value={billingPostal} onChange={e => setBillingPostal(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="Street" value={billingStreet} onChange={e => setBillingStreet(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="City" value={billingCity} onChange={e => setBillingCity(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="Province" value={billingProvince} onChange={e => setBillingProvince(e.target.value)}/>
+            <input className="order-input" type="text" placeholder="Postal Code" value={billingPostal} onChange={e => setBillingPostal(e.target.value)}/>
             <br />
             <br />
             <button className="order-button">Place Order</button>
