@@ -8,7 +8,7 @@
 .footer-columns {
     display: grid;
     grid-template-columns: repeat(auto-fill, 
-                           minmax(210px, 1fr));
+                           minmax(300px, 1fr));
     grid-gap: 45px;
     margin-top: 30px;
 }
@@ -48,4 +48,3 @@ h2 {
 .footer-link:hover {
     background-color: #7b7b7b;
 }
-

@@ -1,0 +1,12 @@
+h6 {
+    font-size: 14pt;
+    text-align: left;
+    margin-left: 20px;
+    color: black;
+}
+
+.order-button {
+    width: 10%;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
