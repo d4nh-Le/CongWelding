@@ -10,6 +10,8 @@ require('dotenv').config({ path: './local.env' });
 const usersRoutes = require('./routes/usersRoutes');
 const productsRoutes = require('./routes/productsRoutes');
 const addressesRoutes = require('./routes/addressesRoutes');
+const ordersRoutes = require('./routes/ordersRoutes');
+const imageRoutes = require('./routes/tempImageRoutes');
 const HttpError = require('./models/httpError');
 
 const app = express();
@@ -29,6 +31,8 @@ app.use(helmet());
 app.use('/api/users', usersRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/addresses', addressesRoutes);
+app.use('/api/orders', ordersRoutes);
+app.use('/api/imageHandler', imageRoutes);
 
 // Error handler for routes that don't exist
 app.use((req, res, next) => {

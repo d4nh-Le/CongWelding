@@ -16,6 +16,6 @@ const orderSchema = new Schema({
     items: { type: Object, required: true } // gonna get the info from the cart and clear it on order confirmation
 });
 
-productSchema.plugin(uniqueValidator);
+orderSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('order', orderSchema);
