@@ -15,7 +15,7 @@ import Contactinfo from './pages/contactinfo';
 import Frequentlyaskedquestions from './pages/frequentlyaskedquestions';
 import Ourcompany from './pages/ourcompany';
 import AccountInfo from './pages/userdetails';
-
+//UPDATED WORKING CODE
 function App() {
   return (
     <div className="App">
