@@ -8,7 +8,8 @@ const WeldingProducts = () => {
   const [filters, setFilters] = useState({
     brand: '',
     type: '',
-    price: '',
+    minPrice: '',
+    maxPrice: '',
     available: false,
   });
 
@@ -29,8 +30,12 @@ const WeldingProducts = () => {
     setFilters({ ...filters, type: value });
   };
 
-  const handlePriceChange = (e) => {
-    setFilters({ ...filters, price: e.target.value });
+  const handlePriceChange = (value) => {
+    setFilters({
+      ...filters,
+      minPrice: value[0],
+      maxPrice: value[1],
+    });
   };
 
   const handleAvailableChange = (e) => {
@@ -56,62 +61,65 @@ const WeldingProducts = () => {
   const visibleProducts = filteredProducts.filter(applyFilters);
 
   return (
-    <div>
-      <Row>
-        <Col span={6}>
-          <Card title="Filters">
-            <div style={{ marginBottom: '16px' }}>
-              <Input placeholder="Price" onChange={handlePriceChange} />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <Select
-                defaultValue=""
-                style={{ width: '100%' }}
-                onChange={handleBrandChange}
+    <div className="container">
+      <div className="filters">
+        <Card title="Filters">
+          <div className="input-container">
+            <Input placeholder="Price" onChange={handlePriceChange} />
+          </div>
+          <div className="select-container">
+            <Select
+              defaultValue=""
+              onChange={handleBrandChange}
+            >
+              <Option value="">Brand</Option>
+              <Option value="3M">3M</Option>
+              <Option value="Lincoln Electric">Lincoln Electric</Option>
+              <Option value="Miller Electric">Miller Electric</Option>
+              <Option value="Donaldson Torit">Donaldson Torit</Option>
+            </Select>
+          </div>
+          <div className="select-container">
+            <Select
+              defaultValue=""
+              onChange={handleTypeChange}
+            >
+              <Option value="">Type</Option>
+              <Option value="Auto-darkening">Auto-darkening</Option>
+              <Option value="MIG/TIG">MIG/TIG</Option>
+              <Option value="Heavy-Duty">Heavy-Duty</Option>
+              <Option value="Portable">Portable</Option>
+            </Select>
+          </div>
+          <div className="checkbox-container">
+            <Checkbox onChange={handleAvailableChange}>Available</Checkbox>
+          </div>
+        </Card>
+      </div>
+      <div className="products">
+        <Row gutter={[16, 16]}>
+          {visibleProducts.map((product) => (
+            <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
+             <Card
+                className="product-card"
+                hoverable
               >
-                <Option value="">Brand</Option>
-                <Option value="3M">3M</Option>
-                <Option value="Lincoln Electric">Lincoln Electric</Option>
-                <Option value="Miller Electric">Miller Electric</Option>
-                <Option value="Donaldson Torit">Donaldson Torit</Option>
-              </Select>
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <Select
-                defaultValue=""
-                style={{ width: '100%' }}
-                onChange={handleTypeChange}
-              >
-                <Option value="">Type</Option>
-                <Option value="Auto-darkening">Auto-darkening</Option>
-                <Option value="MIG/TIG">MIG/TIG</Option>
-                <Option value="Heavy-Duty">Heavy-Duty</Option>
-                <Option value="Portable">Portable</Option>
-              </Select>
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <Checkbox onChange={handleAvailableChange}>Available</Checkbox>
-            </div>
-          </Card>
-        </Col>
-        <Col span={18}>
-          <Row gutter={[16, 16]}>
-            {filteredProducts.map((product) => (
-              <Col key={product.id} span={8}>
-                <Card title={product.name}>
-                  <p>Brand: {product.brand}</p>
-                  <p>Type: {product.type}</p>
-                  <p>Price: ${product.price}</p>
-                  <p>
-                    Availability:{' '}
-                    {product.available ? 'In Stock' : 'Out of Stock'}
-                  </p>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Col>
-      </Row>
+                <div className="product-info">
+                  <div className="product-name">{product.name}</div>
+                  <div className="product-brand">{product.brand}</div>
+                  <div className="product-type">{product.type}</div>
+                  <div className="product-price">${product.price}</div>
+                  {product.available ? (
+                    <div className="product-available">Available</div>
+                  ) : (
+                    <div className="product-unavailable">Unavailable</div>
+                  )}
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 };

@@ -8,3 +8,9 @@ h1 {
     text-align: center;
     color: black;
 }
+
+.cart-checkout-button {
+    width: 7%;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}

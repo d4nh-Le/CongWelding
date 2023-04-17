@@ -1,0 +1,40 @@
+.contact-input {
+    width: 95%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    margin-left: 20px;
+  }
+
+textarea {
+    width: 95%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+h1 {
+    font-size: 20pt;
+    text-align: left;
+    margin-left: 20px;
+
+}
+
+.contact-button {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    font-size: 14pt;
+    text-align: left;
+    margin-left: 20px;
+    color: black;
+}
