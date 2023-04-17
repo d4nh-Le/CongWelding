@@ -37,12 +37,16 @@ const Footer = () => {
 					<div className="footer-link"> 
 					<Link to="/products" style={{ textDecoration: 'none', color: 'white'}}> Our Products </Link>
 					</div>
-					<div className="footer-link"> Our Services </div>
+					<div className="footer-link"> 
+					<Link to="/products" style={{ textDecoration: 'none', color: 'white'}}> Our Services </Link>
+					</div>
 				</div>
 				<div className="column">
 					<h2>Account</h2>
 					<div className="footer-link"> Login </div>
-					<div className="footer-link"> Register </div>
+					<div className="footer-link"> 
+					<Link to="/signup" style={{ textDecoration: 'none', color: 'white'}}> Register </Link>
+					</div>
 				</div>
 			</div>
 			<h3>{`Copyright © Cong Welding ${year}`}</h3>
