@@ -6,7 +6,6 @@ const Contact = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
-    const [emailSent, setEmailSent] = useState(false);
 
     const submit = () => {
         if (name && email && message) {
@@ -26,7 +25,6 @@ const Contact = () => {
             setName('');
             setEmail('');
             setMessage('');
-            setEmailSent(true);
         } else {
             alert('Please fill in all fields.');
         }
