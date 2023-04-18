@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { createOrder, getOrders, getOrderByNumber, getOrderByNumber, 
+const { createOrder, getOrders, getOrderByNumber, 
     getOrdersForUser, updateOrder, deleteOrder } = require('../controllers/ordersController');
 
 const { userAuth } = require('../middleware/user/userAuthentication');

@@ -1,85 +1,115 @@
-const AWS = require('aws-sdk');
 const multer = require('multer');
-const axios = require('axios');
-// test code
-const fs = require('fs');
-const imageBuffer = fs.readFileSync('C:/Users/WinglyRig/Downloads/img/img/ARC 200 EDON.jpg');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const sharp = require('sharp');
+const HttpError = require('../models/httpError');
+require('dotenv').config({ path: './local.env' });
 
-// Sets credentials for AWS
-AWS.config.update({
-  accessKeyId: process.env.AWS_ID,
-  secretAccessKey: process.env.AWS_SECRET,
-  region: 'ca-central-1' // could be wrong
-});
+const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketRegion = process.env.AWS_REGION;
+const accessKey = process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
-// Create S3 client
-const s3 = new AWS.S3();
-
-// Uploads new image to cloud storage
-const uploadImage = async (req, res, next) => {
-  
-  const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: {
-      fileSize: 5 * 1024 * 1024, // limits the file size to 5MB
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey
     },
-    fileFilter: async (req, file) => {
-      if (!file.mimetype.startsWith('/image')) {
-        const error = new HttpError(
-          'File is not an image.',
-          400
-        );
-        throw error;
-      }
-    }
-  });
-
-  let uploadedImage;
-
-  try {
-    uploadedImage = await upload.single('image')(req, res);
-  } catch (err) {
-    const error = new HttpError(
-      'Failed to upload image.',
-      500
-    );
-    return next(error);
-  }
-
-  // Get the image data
-  const imageData = {
-    name: uploadedImage.originalname,
-    url: uploadedImage.location,
-    size: uploadedImage.size,
-    mimetype: uploadedImage.mimetype,
-  };
-
-  res.status(201).json({ imageData });
-};
-
-const testRun = () => {
-  axios.post('https://localhost:5000/upload', {
-  image: imageBuffer
-})
-.then(response => {
-  // console.log(response.statusCode); // should print 201
-  console.log(response); // should print the uploaded image data
-})
-.catch(error => {
-  // console.log(error.response.statusCode); // should print the error status code
-  console.log(error.response); // should print the error message
+    region: bucketRegion
 });
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
+const uploadImage = async (req, res, next) => {
+    try {
+        await new Promise((resolve, reject) => {
+            upload.single('image')(req, res, (err) => {
+                if (err) {
+                    console.log(err);
+                    return next(new HttpError('Failed to upload file.', 500));
+                }
+
+                // Checks file extension and data contents
+                if (!req.file.mimetype.startsWith('image/')) {
+                    const error = new HttpError(
+                        'Only images are allowed to be uploaded.',
+                        400
+                    );
+                    return next(error);
+                }
+
+                sharp(req.file.buffer).metadata()
+                    .then(() => {
+                        const params = {
+                            Bucket: bucketName,
+                            Key: req.file.originalname.replace(/\s+/g, ''),
+                            Body: req.file.buffer,
+                            ContentType: req.file.mimetype
+                        };
+                    
+                        const command = new PutObjectCommand(params);
+                    
+                        s3.send(command, (err, data) => {
+                            if (err) {
+                                return next(new HttpError('Failed to save image on cloud.', 500));
+                            }
+                    
+                            res.status(201).json({ imageUrl: `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${req.file.originalname.replace(/\s+/g, '')}` });
+                        });
+                    })
+                    .catch((err) => {
+                        const error = new HttpError(
+                            'Only images are allowed to be uploaded.',
+                            400
+                        );
+                        return next(error);
+                    });
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        return next(new HttpError('Failed to upload file.', 500));
+    }
 }
 
-testRun();
+  
+const deleteImage = async (req, res, next) => {
 
+    const { image } = req.params;
+    
+    const params = {
+        Bucket: bucketName,
+        Key: image,
+    }
 
-// Deletes image by id on cloud storage
-const deleteImage = async () => {
+    const command = new DeleteObjectCommand(params);
 
+    try {
+        await s3.headObject(params).promise();
+      } catch (err) {
+        const error = new HttpError(
+            'Image not found on cloud.',
+             404
+        );
+        return next(error);
+      }
+
+    try {
+      await s3.send(command);
+    } catch (err) {
+        const error = new HttpError(
+            'Failed to delete image',
+            500
+        );
+        console.log(err);
+        return next(error);
+    }
+
+    res.status(200).json({ message: 'Deleted image.' });
 }
 
 module.exports = {
-  uploadImage,
-  deleteImage
+    uploadImage,
+    deleteImage
 }
