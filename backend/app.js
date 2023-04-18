@@ -17,8 +17,8 @@ const app = express();
 // Certificates that are required for HTTPS
 const options = {
   key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-}
+  cert: fs.readFileSync('cert.pem'),
+};
 
 // Add middlewares
 app.use(bodyParser.json());
@@ -46,10 +46,11 @@ app.use((error, req, res, next) => {
 });
 
 // Connects node.js to mongodb server
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+mongoose
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
-    https.createServer(options, app).listen(5000);
+    https.createServer(options, app).listen(6000);
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });
