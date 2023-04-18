@@ -1,49 +1,28 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
-import './account.css';
+import React from 'react';
+import { Tabs } from 'antd';
+import PersonalInfoForm from './PersonalInfoForm';
+import PaymentMethodForm from './PaymentMethodForm';
+import OrderHistory from './OrderHistory';
 
-const Account = () => {
-  const [loading, setLoading] = useState(false);
+const { TabPane } = Tabs;
 
-  const handleFinish = async (values) => {
-    setLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoading(false);
-      message.success('Logged in successfully');
-    } catch (error) {
-      setLoading(false);
-      message.error('Invalid username or password');
-    }
-  };
-
+const AccountPage = () => {
   return (
-    <div className="login-container">
-      <Form onFinish={handleFinish} className="login-form">
-        <h2 className="login-form-header">Log In</h2>
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: 'Please enter your username' }]}
-        >
-          <Input placeholder="Username" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: 'Please enter your password' }]}
-        >
-          <Input.Password placeholder="Password" />
-        </Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          loading={loading}
-          className="login-form-button"
-        >
-          Log In
-        </Button>
-      </Form>
+    <div>
+      <h2>My Account</h2>
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Personal Information" key="1">
+          <PersonalInfoForm />
+        </TabPane>
+        <TabPane tab="Payment Method" key="2">
+          <PaymentMethodForm />
+        </TabPane>
+        <TabPane tab="Order History" key="3">
+          <OrderHistory />
+        </TabPane>
+      </Tabs>
     </div>
   );
 };
 
-export default Account;
+export default AccountPage;

@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Input, Checkbox, Select, Card } from 'antd';
+import {
+  Row,
+  Col,
+  Input,
+  Checkbox,
+  Select,
+  Card,
+  Slider,
+  Button,
+  Modal,
+} from 'antd';
 import './products.css';
 
 const { Option } = Select;
@@ -14,6 +24,8 @@ const WeldingProducts = () => {
   });
 
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     fetch('products/')
@@ -49,7 +61,10 @@ const WeldingProducts = () => {
     if (filters.type && product.type !== filters.type) {
       return false;
     }
-    if (filters.price && product.price > parseInt(filters.price)) {
+    if (filters.minPrice && product.price < parseInt(filters.minPrice)) {
+      return false;
+    }
+    if (filters.maxPrice && product.price > parseInt(filters.maxPrice)) {
       return false;
     }
     if (filters.available && !product.available) {
@@ -60,18 +75,37 @@ const WeldingProducts = () => {
 
   const visibleProducts = filteredProducts.filter(applyFilters);
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setIsModalVisible(true);
+  };
+
+  const handleModalOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleModalCancel = () => {
+    setSelectedProduct(null);
+    setIsModalVisible(false);
+  };
+
   return (
     <div className="container">
       <div className="filters">
         <Card title="Filters">
           <div className="input-container">
-            <Input placeholder="Price" onChange={handlePriceChange} />
+            <Slider
+              range
+              defaultValue={[0, 1000]}
+              onChange={handlePriceChange}
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>${filters.minPrice ? filters.minPrice : 0}</div>
+              <div>${filters.maxPrice ? filters.maxPrice : 1000}</div>
+            </div>
           </div>
           <div className="select-container">
-            <Select
-              defaultValue=""
-              onChange={handleBrandChange}
-            >
+            <Select defaultValue="" onChange={handleBrandChange}>
               <Option value="">Brand</Option>
               <Option value="3M">3M</Option>
               <Option value="Lincoln Electric">Lincoln Electric</Option>
@@ -80,10 +114,7 @@ const WeldingProducts = () => {
             </Select>
           </div>
           <div className="select-container">
-            <Select
-              defaultValue=""
-              onChange={handleTypeChange}
-            >
+            <Select defaultValue="" onChange={handleTypeChange}>
               <Option value="">Type</Option>
               <Option value="Auto-darkening">Auto-darkening</Option>
               <Option value="MIG/TIG">MIG/TIG</Option>
@@ -99,23 +130,34 @@ const WeldingProducts = () => {
       <div className="products">
         <Row gutter={[16, 16]}>
           {visibleProducts.map((product) => (
-            <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
-             <Card
-                className="product-card"
-                hoverable
-              >
-                <div className="product-info">
-                  <div className="product-name">{product.name}</div>
-                  <div className="product-brand">{product.brand}</div>
-                  <div className="product-type">{product.type}</div>
-                  <div className="product-price">${product.price}</div>
-                  {product.available ? (
-                    <div className="product-available">Available</div>
-                  ) : (
-                    <div className="product-unavailable">Unavailable</div>
-                  )}
-                </div>
-              </Card>
+            <Col
+              key={product.id}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={6}
+              style={{ flex: 1 }}
+            >
+              <div className="product-card-wrapper">
+                <Card className="product-card" hoverable>
+                  <div className="product-info">
+                    <div className="product-name">{product.name}</div>
+                    <div className="product-brand">{product.brand}</div>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{ width: '200px', height: '150px' }}
+                    />
+                    <div className="product-type">{product.type}</div>
+                    <div className="product-price">${product.price}</div>
+                    {product.available ? (
+                      <div className="product-available">Available</div>
+                    ) : (
+                      <div className="product-unavailable">Unavailable</div>
+                    )}
+                  </div>
+                </Card>
+              </div>
             </Col>
           ))}
         </Row>
