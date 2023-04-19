@@ -1,18 +1,20 @@
 const { validationResult, check } = require('express-validator');
-
+const axios = require('axios');
+const https = require('https');
 const HttpError = require('../models/httpError');
 const Cart = require('../models/userRelated/cart.js');
 const User = require('../models/roles/verified/user');
-const Product = require('../models/productRelated/product');
 
 const getCart = async (req, res) => {
     try {
       const usermail = req.userData.email;
+      const userId = req.userData.userId;  
+
       const user = await User.findOne({ email: usermail });
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      const cart = await Cart.find({ user: user._id });
+      const cart = await Cart.find({ user: userId });
       if (!cart) {
         return res.status(404).json({ message: 'Cart not found' });
       }
@@ -23,32 +25,31 @@ const getCart = async (req, res) => {
     }
   }
 
-const addCartItem = async (req, res) => {
+const addCartItem = async (req, res, next) => {
+    const userId = req.userData.userId;
+    const { id, name, quantity, price, image } = req.body;
+
     try {
-      const usermail = req.userData.email;
-      const user = await User.findOne({ email: usermail });
   
-      if (!user) {
+      if (!userId) {
         return res.status(404).json({ message: 'User not found' });
       }
   
-      const { name, quantity, price, image } = req.body;
-  
-      let cart = await Cart.findOne({ user: user._id });
+      let cart = await Cart.findOne({ user: userId });
   
       if (!cart) {
         cart = new Cart({
-          user: user._id,
-          items: [{ product: name, quantity, price, image }]
+          user: userId,
+          items: [{ product: id, name, quantity, price, image }]
         });
       } else {
-        const itemIndex = cart.items.findIndex(item => item.product.toString() === productId.toString());
+        const itemIndex = cart.items.findIndex(item => item.product.toString() === id.toString());
   
         if (itemIndex >= 0) {
           cart.items[itemIndex].quantity += quantity;
           cart.items[itemIndex].price = price;
         } else {
-          cart.items.push({ product: name, quantity, price, image });
+          cart.items.push({ product: id, name, quantity, price, image });
         }
       }
       await cart.save();
