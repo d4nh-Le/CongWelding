@@ -97,3 +97,8 @@ body {
   color: red;
   font-weight: bold;
 }
+
+.product-card-wrapper {
+  display: flex;
+  justify-content: center;
+}
