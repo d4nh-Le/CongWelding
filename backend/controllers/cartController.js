@@ -24,7 +24,7 @@ const getCart = async (req, res) => {
 
 const addCartItem = async (req, res, next) => {
     const userId = req.userData.userId;
-    const { id, productName, quantity, price, image } = req.body;
+    const { id, name, quantity, price, image } = req.body;
 
     try {
   
@@ -37,17 +37,17 @@ const addCartItem = async (req, res, next) => {
       if (!cart) {
         cart = new Cart({
           user: userId,
-          items: [{ product: id, productName, quantity, price, image }]
+          items: [{ product: id, name, quantity, price, image }]
         });
       } else {
         const itemIndex = cart.items.findIndex(item => item.product.toString() === id.toString());
   
         if (itemIndex >= 0) {
+          cart.items[itemIndex].name = name;
           cart.items[itemIndex].quantity += quantity;
           cart.items[itemIndex].price = price;
-          cart.items[itemIndex].name = productName;
         } else {
-          cart.items.push({ product: id, productName, quantity, price, image });
+          cart.items.push({ product: id, name, quantity, price, image });
         }
       }
       await cart.save();
