@@ -12,6 +12,7 @@ const productsRoutes = require('./routes/productsRoutes');
 const addressesRoutes = require('./routes/addressesRoutes');
 const ordersRoutes = require('./routes/ordersRoutes');
 const imageRoutes = require('./routes/tempImageRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const HttpError = require('./models/httpError');
 
 const app = express();
@@ -33,6 +34,7 @@ app.use('/api/products', productsRoutes);
 app.use('/api/addresses', addressesRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/imageHandler', imageRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Error handler for routes that don't exist
 app.use((req, res, next) => {

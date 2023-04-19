@@ -168,6 +168,7 @@ const verifyAPI = "/verify/";
         'Sending verification email failed, please try again.',
         500
       );
+      console.log(err);
       return next(error);
     }
 
@@ -178,6 +179,7 @@ const verifyAPI = "/verify/";
         'Saving user failed, please try again.',
         500
       );
+      console.log(err);  
       return next(error);
     }
 
@@ -251,6 +253,7 @@ const verifyAPI = "/verify/";
         'Signing up failed, please try again.',
         500
       );
+      console.log(err);
       return next(error);
     }
   

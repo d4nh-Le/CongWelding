@@ -7,7 +7,8 @@ const bcryptRounds = 10;
 
 // Creates verified user from unverifiedUser
 const createUser = async (req, res, next) => {
-  check('name').not().isEmpty(),
+  check('firstName').not().isEmpty(),
+  check('lastName').not().isEmpty(),
   check('email').normalizeEmail().isEmail(), // Puts it in lowercase as casing doesn't matter for emails and checks if it has a valid email structure
   check('password').isLength({ min: minLength })
 
@@ -17,7 +18,7 @@ const createUser = async (req, res, next) => {
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
-  const { name, password, email, gender } = req.body;
+  const { firstName, lastName, password, email } = req.body;
 
   let existingUser;
   let hashedPassword;
@@ -42,10 +43,10 @@ const createUser = async (req, res, next) => {
   }
   
   const createdUser = new User({
-    name,
+    firstName,
+    lastName,
     password: hashedPassword,
-    email,
-    gender
+    email
   });
 
   try {
@@ -55,6 +56,7 @@ const createUser = async (req, res, next) => {
       'Signing up failed, please try again.',
       500
     );
+    console.log(err);
     return next(error);
   }
 

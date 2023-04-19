@@ -4,7 +4,7 @@ const { createProduct, getProducts, getProduct, updateProduct, deleteProduct, ge
 const { adminAuth } = require('../middleware/admin/adminAuthentication');
 
 module.exports = express.Router()
-  .post('/create', adminAuth, createProduct)
+  .post('/create', createProduct)
   .get('/', getProducts)
   .get('/:name', getProductsByName)
   .patch('/update/:name', adminAuth, updateProduct)

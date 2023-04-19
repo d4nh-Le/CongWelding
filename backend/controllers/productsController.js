@@ -2,16 +2,17 @@ const { validationResult, check } = require('express-validator');
 
 const HttpError = require('../models/httpError');
 const Product = require('../models/productRelated/product');
+const { uploadImage, deleteImage } = require('../middleware/imageHandler');
 
 // Creates new product with optional welding specifications
 const createProduct = async (req, res, next) => {
-  const { name, description, price, image, quantity, weldingSpecs } = req.body;
+  const { name, description, price, images, quantity, weldingSpecs } = req.body;
 
   const createdProduct = new Product({
     name,
     description,
     price,
-    image,
+    images,
     quantity,
   });
 
@@ -157,7 +158,9 @@ const getProduct = async (req, res, next) => {
 // Updates a product
 const updateProduct = async (req, res, next) => {
   const productName = req.params.name;
-  const { name, description, price, image, quantity, weldingSpecs } = req.body;
+  const { name, description, price, images, quantity, weldingSpecs } = req.body;
+
+
 
   let product;
   try {
@@ -181,7 +184,7 @@ const updateProduct = async (req, res, next) => {
   name ? (product.name = name) : null;
   description ? (product.description = description) : null;
   price ? (product.price = price) : null;
-  image ? (product.image = image) : null;
+  images ? (product.image = images) : null;
   quantity ? (product.quantity = quantity) : null;
   weldingSpecs ? (product.weldingSpecs = weldingSpecs) : null;
 

@@ -15,16 +15,16 @@ const userSendActivation = async(activationLink, email) => {
    console.log(mailInfo);
 
 
-   let previewUrl;
+//    let previewUrl;
 
-   try {
-        previewUrl = await testSendMail(mailInfo);
-    } catch (err) {
-        const error = new HttpError('Something went wrong, could not send activation email.', 500);
-        return next(error);
-    }
+//    try {
+//         previewUrl = await testSendMail(mailInfo);
+//     } catch (err) {
+//         const error = new HttpError('Something went wrong, could not send activation email.', 500);
+//         console.log(error);
+//     }
 
-    return previewUrl;
+//     return previewUrl;
 }
 
 module.exports = {

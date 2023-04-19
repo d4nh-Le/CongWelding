@@ -1,13 +1,29 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-const cartItemSchema = require('./cartItem');
+const Schema = mongoose.Schema;
 
-const cartSchema = new mongoose.Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
-  items: { type: [cartItemSchema], required: true },
-  _id: false // Disables default Mongoose id generation
+const CartSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  items: [
+    {
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+      },
+      quantity: {
+        type: Number,
+        default: 1
+      },
+      price: {
+        type: Number,
+        required: true
+      }
+    }
+  ],
 });
 
-cartSchema.plugin(uniqueValidator);
-
-module.exports = mongoose.model('cart', cartSchema);
+module.exports = mongoose.model('Cart', CartSchema);
