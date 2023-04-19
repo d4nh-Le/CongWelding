@@ -1,7 +1,4 @@
 const { validationResult, check } = require('express-validator');
-const axios = require('axios');
-const https = require('https');
-const HttpError = require('../models/httpError');
 const Cart = require('../models/userRelated/cart.js');
 const User = require('../models/roles/verified/user');
 
