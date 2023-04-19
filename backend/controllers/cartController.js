@@ -24,7 +24,7 @@ const getCart = async (req, res) => {
 
 const addCartItem = async (req, res, next) => {
     const userId = req.userData.userId;
-    const { id, name, quantity, price, image } = req.body;
+    const { id, productName, quantity, price, image } = req.body;
 
     try {
   
@@ -37,7 +37,7 @@ const addCartItem = async (req, res, next) => {
       if (!cart) {
         cart = new Cart({
           user: userId,
-          items: [{ product: id, name, quantity, price, image }]
+          items: [{ product: id, productName, quantity, price, image }]
         });
       } else {
         const itemIndex = cart.items.findIndex(item => item.product.toString() === id.toString());
@@ -45,8 +45,9 @@ const addCartItem = async (req, res, next) => {
         if (itemIndex >= 0) {
           cart.items[itemIndex].quantity += quantity;
           cart.items[itemIndex].price = price;
+          cart.items[itemIndex].name = productName;
         } else {
-          cart.items.push({ product: id, name, quantity, price, image });
+          cart.items.push({ product: id, productName, quantity, price, image });
         }
       }
       await cart.save();
@@ -59,21 +60,22 @@ const addCartItem = async (req, res, next) => {
   }
 
 
-
+// Changes cart item quantity
 const updateCartItem = async (req, res) => {
+
+    const userId = req.userData.userId;
+
     try {
-      const usermail = req.params.email;
-      const user = await User.findOne({ email: usermail });
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      const cart = await Cart.findOne({ user: user._id });
+      
+      const cart = await Cart.findOne({ user: userId });
       if (!cart) {
         return res.status(404).json({ message: 'Cart not found' });
       }
       const itemId = req.params.itemId;
       const itemIndex = cart.items.findIndex(item => item._id.toString() === itemId.toString());
   
+      console.log(itemIndex);
+
       if (itemIndex < 0) {
         return res.status(404).json({ message: 'Item not found in cart' });
       }
@@ -99,15 +101,11 @@ const updateCartItem = async (req, res) => {
 
 
 const deleteCartItem = async (req, res) => {
+
+    const userId = req.userData.userId;
+
     try {
-      const usermail = req.params.email;
-      const user = await User.findOne({ email: usermail });
-  
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      const cart = await Cart.findOne({ user: user._id });
+      const cart = await Cart.findOne({ user: userId });
   
       if (!cart) {
         return res.status(404).json({ message: 'Cart not found' });
@@ -134,15 +132,10 @@ const deleteCartItem = async (req, res) => {
 
 
 const deleteCart = async (req, res) => {
+    const userId = req.userData.userId;
+
     try {
-      const usermail = req.params.email;
-      const user = await User.findOne({ email: usermail });
-  
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      const cart = await Cart.findOne({ user: user._id });
+      const cart = await Cart.findOne({ user: userId });
   
       if (!cart) {
         return res.status(404).json({ message: 'Cart not found' });

@@ -5,6 +5,6 @@ const { userAuth } = require('../middleware/user/userAuthentication');
 module.exports = express.Router()
     .get('/', userAuth, getCart)
     .post('/add', userAuth, addCartItem)
-    .patch('/update/:itemId', updateCartItem)
-    .delete('/:itemId', deleteCartItem)
-    .delete('/clear', deleteCart);
+    .patch('/update/:itemId', userAuth, updateCartItem)
+    .delete('/delete/:itemId', userAuth, deleteCartItem)
+    .delete('/clear', userAuth, deleteCart);
