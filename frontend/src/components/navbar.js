@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { Modal, Form, Input, Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 import SearchBar from './searchbar';
 import Logo from '../images/cong-logo.png';
-import AccountInfo from '../pages/userdetails';
 import './navbar.css';
+import { AuthContext } from '../AuthContext';
 
-function Navbar() { 
-  const [isModalVisible, setIsModalVisible] = useState(false); 
-  
+function Navbar() {
+  const { dispatch, email, userId, sessionId } = useContext(AuthContext);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -26,9 +27,36 @@ function Navbar() {
     form.resetFields();
   };
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    handleOk();
+  const onFinish = async (values) => {
+    try {
+      const response = await fetch('/users/login', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+
+      // Store the session in the dispatch
+      console.log(data.userId, data.sessionId);
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          sessionId: data.sessionId,
+          email: data.email,
+          userId: data.userId,
+        },
+      });
+      handleOk();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -45,6 +73,26 @@ function Navbar() {
   const handleSignUpClick = () => {
     handleCancel();
   };
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/users/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      dispatch({ type: 'LOGOUT' });
+      alert('You have been logged out');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const isLoggedIn = sessionId !== null;
 
   return (
     <nav className="navbar">
@@ -57,9 +105,20 @@ function Navbar() {
         <SearchBar />
       </div>
       <div className="navbar-right">
-        <a href="/" className="navbar-link" onClick={handleAccountClick}>
-          <FontAwesomeIcon icon={faUser} /> | Account
-        </a>
+        {isLoggedIn ? (
+          <>
+            <Link to="/userdetails" className="navbar-link">
+              {email}
+            </Link>
+            <a href="/" className="navbar-link" onClick={handleLogout}>
+              Logout
+            </a>
+          </>
+        ) : (
+          <a href="/" className="navbar-link" onClick={handleAccountClick}>
+            <FontAwesomeIcon icon={faUser} /> | Account
+          </a>
+        )}
         <a href="/cart" className="navbar-link">
           <FontAwesomeIcon icon={faCartShopping} /> | Cart
         </a>
@@ -79,7 +138,7 @@ function Navbar() {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            name="username"
+            name="email"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input placeholder="Username" />
@@ -104,7 +163,6 @@ function Navbar() {
             Sign Up!
           </Link>
           <Link to="/userdetails"> Detailts </Link>
-
         </div>
       </Modal>
     </nav>

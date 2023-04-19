@@ -15,9 +15,11 @@ import Contactinfo from './pages/contactinfo';
 import Frequentlyaskedquestions from './pages/frequentlyaskedquestions';
 import Ourcompany from './pages/ourcompany';
 import AccountInfo from './pages/userdetails';
+import { AuthProvider } from './AuthContext';
 //UPDATED WORKING CODE
 function App() {
   return (
+    <AuthProvider>
     <div className="App">
       <Router>
         <Navbar />
@@ -38,6 +40,7 @@ function App() {
         <Footer />
       </Router>
     </div>
+    </AuthProvider>
   );
 }
 
