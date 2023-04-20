@@ -4,23 +4,23 @@ const User = require('../models/roles/verified/user');
 const Product = require('../models/productRelated/product');
 const HttpError = require('../models/httpError');
 
-const getCart = async (req, res) => {
+const getCart = async (req, res, next) => {
     try {
-      const usermail = req.userData.email;
       const userId = req.userData.userId;  
-
-      const user = await User.findOne({ email: usermail });
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
       const cart = await Cart.find({ user: userId });
+
       if (!cart) {
         return res.status(404).json({ message: 'Cart not found' });
       }
+      
       res.json({ cart });
     } catch (err) {
+      const error = new HttpError(
+        'Failed to get cart.',
+        500
+      );
       console.error(err);
-      res.status(500).json({ message: 'Failed to get cart' });
+      return next(error);
     }
   }
 
