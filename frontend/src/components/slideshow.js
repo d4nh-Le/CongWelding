@@ -5,26 +5,29 @@ import SlideOne from '../images/welding1.jpg';
 import SlideTwo from '../images/welding2.jpg';
 import SlideThree from '../images/welding3.jpg';
 import SlideFour from '../images/welding4.jpg';
-
 const SlideShow = () => {
   const slides = [
     {
-      label: 'Slide One',
+      label: 'Quality Welding Supplies for All Your Welding Needs!',
       image: SlideOne,
     },
     {
-      label: 'Slide Two',
+      label: 'Shop Our Bestsellers ',
       image: SlideTwo,
     },
     {
-      label: 'Slide Three',
+      label: 'Join Us Today',
       image: SlideThree,
     },
     {
-      label: 'Slide Four',
+      label: 'Enter the World of Welding',
       image: SlideFour,
     },
   ];
+
+    const labelStyle = {
+    fontSize: 30,
+  };
 
   return (
     <Carousel autoplay>
