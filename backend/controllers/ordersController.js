@@ -73,6 +73,25 @@ const getOrderByNumber = async (req, res, next) => {
 
 // Get all orders for specific user
 const getOrdersForUser = async (req, res, next) => {
+  const userId = req.userData.userId;
+
+  let order;
+  try {
+    order = await Order.findOne({user: userId})
+  } catch(err) {
+    const error = new HttpError(
+      'Can\'t find existing orders for user',
+      500
+    );
+    console.log(err);
+    return next(error);
+  }
+
+  if(!order) {
+    order = new Order({
+      user: userId
+    })
+  }
 
 }
 
