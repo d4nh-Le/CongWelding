@@ -73,6 +73,14 @@ const getOrderByNumber = async (req, res, next) => {
 
 // Get all orders for specific user
 const getOrdersForUser = async (req, res, next) => {
+  const userId = req.userData.userId;
+
+  let orders;
+  try {
+    orders = await Order.findOne({})
+  } catch(err) {
+    console.log('Still more work to do.....');
+  }
 
 }
 

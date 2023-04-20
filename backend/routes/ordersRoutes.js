@@ -9,7 +9,7 @@ const { adminAuth } = require('../middleware/admin/adminAuthentication');
 module.exports = express.Router()
     .post('/create', userAuth || adminAuth, createOrder)
     .get('/', adminAuth, getOrders)
-    .get('/:userId', userAuth, getOrdersForUser)
+    .get('/userOrders', userAuth, getOrdersForUser)
     .get('/:orderNumber', userAuth, getOrderByNumber)
     .patch('/update/:orderNumber', adminAuth, updateOrder)
     .delete('/delete/:orderNumber', adminAuth, deleteOrder);

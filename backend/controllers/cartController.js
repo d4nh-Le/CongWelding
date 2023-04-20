@@ -1,6 +1,8 @@
 const { validationResult, check } = require('express-validator');
 const Cart = require('../models/userRelated/cart.js');
 const User = require('../models/roles/verified/user');
+const Product = require('../models/productRelated/product');
+const HttpError = require('../models/httpError');
 
 const getCart = async (req, res) => {
     try {
@@ -24,10 +26,31 @@ const getCart = async (req, res) => {
 
 const addCartItem = async (req, res, next) => {
     const userId = req.userData.userId;
-    const { id, name, quantity, price, image } = req.body;
+    const { productId, quantity } = req.body;
+
+    // Gets product info
+    let product;
+    try {
+      product = await Product.findOne({ _id: productId });
+    } catch (err) {
+      const error = new HttpError(
+        'Fetching product failed, please try again later.',
+        500
+      );
+      return next(error);
+    }
+
+    if (!product) {
+      const error = new HttpError(
+        'Could not find product with the given id.',
+        404
+      );
+      return next(error);
+    }
+
+    const { name, price, image } = product;
 
     try {
-  
       if (!userId) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -37,17 +60,17 @@ const addCartItem = async (req, res, next) => {
       if (!cart) {
         cart = new Cart({
           user: userId,
-          items: [{ product: id, name, quantity, price, image }]
+          items: [{ product: productId, name, quantity, price, image }]
         });
       } else {
-        const itemIndex = cart.items.findIndex(item => item.product.toString() === id.toString());
+        const itemIndex = cart.items.findIndex(item => item.product.toString() === productId.toString());
   
         if (itemIndex >= 0) {
           cart.items[itemIndex].name = name;
           cart.items[itemIndex].quantity += quantity;
           cart.items[itemIndex].price = price;
         } else {
-          cart.items.push({ product: id, name, quantity, price, image });
+          cart.items.push({ product: productId, name, quantity, price, image });
         }
       }
       await cart.save();
