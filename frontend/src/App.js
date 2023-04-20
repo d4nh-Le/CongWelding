@@ -5,7 +5,7 @@ import Navbar from './components/navbar';
 import Navbar2 from './components/navbar-second';
 import Footer from './components/footer';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import Cart from './pages/Cart';
+import Cart from './components/CartPage';
 import Signup from './pages/signup';
 import WeldingProducts from './pages/products';
 import Orderpage from './pages/orderpage';
