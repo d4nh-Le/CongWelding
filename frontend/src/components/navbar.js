@@ -162,7 +162,7 @@ function Navbar() {
           <Link to="/signup" onClick={handleSignUpClick}>
             Sign Up!
           </Link>
-          <Link to="/userdetails"> Detailts </Link>
+          <Link to="/userdetails"> Details </Link>
         </div>
       </Modal>
     </nav>

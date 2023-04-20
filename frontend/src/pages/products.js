@@ -130,34 +130,17 @@ const WeldingProducts = () => {
       <div className="products">
         <Row gutter={[16, 16]}>
           {visibleProducts.map((product) => (
-            <Col
-              key={product.id}
-              xs={24}
-              sm={12}
-              md={8}
-              lg={6}
-              style={{ flex: 1 }}
-            >
-              <div className="product-card-wrapper">
-                <Card className="product-card" hoverable>
-                  <div className="product-info">
-                    <div className="product-name">{product.name}</div>
-                    <div className="product-brand">{product.brand}</div>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      style={{ width: '200px', height: '150px' }}
-                    />
-                    <div className="product-type">{product.type}</div>
-                    <div className="product-price">${product.price}</div>
-                    {product.available ? (
-                      <div className="product-available">Available</div>
-                    ) : (
-                      <div className="product-unavailable">Unavailable</div>
-                    )}
-                  </div>
-                </Card>
-              </div>
+            <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
+              <Card
+                hoverable
+                cover={<img src={product.image} alt={product.name} />}
+                onClick={() => handleProductClick(product)}
+              >
+                <Card.Meta
+                  title={product.name}
+                  description={`$${product.price}`}
+                />
+              </Card>
             </Col>
           ))}
         </Row>
