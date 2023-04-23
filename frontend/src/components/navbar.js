@@ -43,7 +43,6 @@ function Navbar() {
 
       const data = await response.json();
 
-      // Store the session in the dispatch
       console.log(data.userId, data.sessionId);
       dispatch({
         type: 'LOGIN',

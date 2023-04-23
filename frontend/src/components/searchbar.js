@@ -8,7 +8,7 @@ function SearchBar() {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    console.log('searching for:', searchTerm); // replace with actual search functionality
+    console.log('searching for:', searchTerm); 
     try {
       const response = await fetch(`products/${searchTerm}`);
       const searchResults = await response.json();
