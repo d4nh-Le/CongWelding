@@ -1,0 +1,17 @@
+.thecontainer{
+    flex: 6;
+      height: 95vh;
+      background-color: #f1f1f1;
+      padding: 20px;
+  }
+ .orderleft,.orderbottomleft{
+        float: left;
+        width: 50%;
+ }
+ .orderright,.orderbottomright{
+    float: right;
+    width: 50%;
+ }
+ .ordertop{
+     display: flex;
+ }

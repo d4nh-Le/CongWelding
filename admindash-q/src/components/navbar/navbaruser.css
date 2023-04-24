@@ -1,0 +1,68 @@
+.navbar {
+  box-shadow: 0 2px 4px rgba(221, 206, 206, 0.1);
+   display: flex;
+   justify-content: space-between;
+   background-color: rgb(230, 93, 145);
+   border-radius: 5px;
+   height: 10vh;
+   border-radius: 5px;
+ }
+ 
+ .logo-container {
+   display: flex;
+   align-items: center;
+ }
+ 
+ .logo {
+   height: 100%;
+ }
+ 
+ .title-container {
+   display: flex;
+   align-items: center;
+   height: 100%;
+ }
+ 
+ .title {
+   margin: 0 0 0 10px;
+ }
+ 
+ .button-container {
+   display: flex;
+   height: 100%;
+ }
+ 
+ .import-button-container {
+   display: flex;
+   height: 100%;
+ }
+ 
+ .import-button {
+   margin-right: 10px;
+   background-color: #4CAF50;
+   color: white;
+   padding: 10px 20px;
+   border-radius: 4px;
+   cursor: pointer;
+ }
+ 
+ .csv-input {
+   display: none;
+ }
+ 
+ .add-button-container {
+   display: flex;
+   height: 100%;
+ }
+ 
+ .add-item-btn {
+   background-color: #008CBA;
+   color: white;
+   padding: 10px 20px;
+   border-radius: 4px;
+   cursor: pointer;
+   border: none;
+   margin-left: 10px;
+   height:  80%;
+ }
+ 

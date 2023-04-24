@@ -1,0 +1,61 @@
+.sidebar {
+    background-color: lavenderblush;
+    flex: 1;
+    border-right: 0.5px solid;
+    height: 100vh;
+    position: sticky;
+    min-height: "100vh";
+}
+.sidebar .top {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.sidebar .top .logo {
+    font-size: medium;
+    font-weight: bold;
+    color: purple;
+}
+.sidebar .center {
+    padding-left: 10px;
+}
+.sidebar .center ul {
+    list-style: inside;
+    margin: 0;
+    padding: 0;
+}
+.sidebar .center ul .title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #999;
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+.sidebar .center ul li {
+    display: flex;
+    align-items: center;
+    padding: 0.1rem;
+    cursor: pointer;
+}
+.sidebar .center ul li:hover {
+    background-color: #e4a702;
+}
+.sidebar .center ul li .icon {
+    font-size: 1rem;
+    color: #3c0347;
+}
+.sidebar .center ul li span {
+    margin-left: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #050b20;
+}
+.sidebar .bottom {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+}
+.sidebar .bottom .colorop {
+    cursor: pointer;
+    padding: 0.5rem;
+}

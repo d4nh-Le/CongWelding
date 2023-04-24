@@ -1,0 +1,82 @@
+.productleft{
+    float: left;
+    width: 30%;
+    height:80vh;
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+.productright{
+    float: right;
+    width: 60%;
+    height: 80vh;
+    background-color: #f4f5ba;
+    padding: 20px;
+}
+.productcontainer{
+  flex: 6;
+    height: 95vh;
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+.inner-wrap{
+	padding: 30px;
+	background: #F8F8F8;
+	border-radius: 6px;
+	margin-bottom: 15px;
+}
+.section{
+	font: normal 20px 'Bitter', serif;
+	color: #2A88AD;
+	margin-bottom: 5px;
+}
+label {
+  display: flex;
+  font: 1.5rem Arial, Helvetica, sans-serif;
+  color: #888;
+  margin-bottom: 15px;
+  height: 40px; /* add this */
+}
+input{
+  display: flex;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  margin-left: 2rem;
+}
+
+.columns1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column1 {
+  width: 55%;
+}
+.columns2 {
+  display: flex;
+  justify-content: space-between;
+  height: 35vh;
+}
+
+.column2 {
+  width: 60%;
+  padding: 10px;
+}
+.textarea{
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+  margin-top: 1rem;
+}
+button{
+  padding: 10px 20px;
+  margin: 10px ;
+  float: right;;
+}
